@@ -27,9 +27,10 @@ afterEvaluate {
 //                version = '1.0.0'
 //            }
         }
-
-        repositories {
-            maven { url "file:${rootProject.file("maven/libs")}" }
+        if (isLocalMaven) {
+            repositories {
+                maven { url "file:${rootProject.file("maven/libs")}" }
+            }
         }
     }
 }

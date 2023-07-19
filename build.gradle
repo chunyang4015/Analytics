@@ -1,4 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+ext {
+    isLocalMaven = false
+}
 
 buildscript {
     repositories {
@@ -22,13 +25,7 @@ allprojects {
         maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
         maven { url "https://jitpack.io" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven {
-            url "file:${rootProject.file("maven/libs")}"
-        }
-//        maven {
-//            allowInsecureProtocol = true
-//            url local_maven
-//        }
+        maven { url "file:${rootProject.file("maven/libs")}" }
     }
 }
 
