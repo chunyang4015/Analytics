@@ -1,10 +1,8 @@
 package com.anso.lib.analytics.bean
 
-import androidx.annotation.Keep
 import com.anso.lib.analytics.db.EventTable
 import org.json.JSONObject
 
-@Keep
 data class EventData(
     val sid: String,//APP 生命周期内唯一ID
     val type: String,//类型 [EVENT] [SCREEN]

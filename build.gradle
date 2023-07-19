@@ -22,10 +22,9 @@ allprojects {
         maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
         maven { url "https://jitpack.io" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-//        maven {
-//            allowInsecureProtocol = true
-//            url maven_host
-//        }
+        maven {
+            url "file:${rootProject.file("maven/libs")}"
+        }
 //        maven {
 //            allowInsecureProtocol = true
 //            url local_maven

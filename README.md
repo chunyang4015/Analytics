@@ -77,7 +77,7 @@ override fun onStop() {
 具体示例代码如下你可以使用某一中方式即可
 
 ```kotlin
-    class NetImpl : INetService {
+class NetImpl : INetService {
     private val all = true
     private val debug = true
     override suspend fun push(
@@ -94,6 +94,7 @@ override fun onStop() {
                         builder.append(it.toString())
                     }
                     ALogger.logWrite("全部发送:$builder")
+                    all?.invoke(true)
                 } else {
                     RxHttp.get("todo").add("list", list).toAwait<String>().await()
                     all?.invoke(true)
@@ -102,6 +103,7 @@ override fun onStop() {
                 e.printStackTrace()
             }
         } else {
+
             list.forEach {
                 //此处也可以根据自己业务需求进行定制操作
                 val map = mutableMapOf<String, String>()
@@ -113,6 +115,7 @@ override fun onStop() {
                 }
                 if (debug) {
                     ALogger.logWrite("请求数据:$map")
+                    fromArray?.invoke(it.id)
                 } else {
                     try {
                         RxHttp.get("todo").addAll(map).toAwait<String>().await()

@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                             builder.append(it.toString())
                         }
                         ALogger.logWrite("全部发送:$builder")
+                        all?.invoke(true)
                     } else {
                         RxHttp.get("todo").add("list", list).toAwait<String>().await()
                         all?.invoke(true)
@@ -75,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     if (debug) {
                         ALogger.logWrite("请求数据:$map")
+                        fromArray?.invoke(it.id)
                     } else {
                         try {
                             RxHttp.get("todo").addAll(map).toAwait<String>().await()

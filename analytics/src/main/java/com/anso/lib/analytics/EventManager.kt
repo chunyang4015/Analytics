@@ -2,13 +2,11 @@ package com.anso.lib.analytics
 
 import android.app.Application
 import android.content.Context
-import androidx.annotation.Keep
 import com.anso.lib.analytics.db.EventDatabase
 import com.anso.lib.analytics.db.EventTable
 import com.anso.lib.analytics.push.APushService
 import com.anso.lib.analytics.utils.ALogger
 
-@Keep
 object EventManager {
 
     var config = EventConfig()

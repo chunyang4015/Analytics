@@ -1,10 +1,8 @@
 package com.anso.lib.analytics.db
 
-import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Keep
 @Entity(tableName = "Event")
 data class EventTable(
     val sid: String,//APP 生命周期唯一id

@@ -44,3 +44,5 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
 }
+
+apply from: rootProject.file('gradle/publish_maven.gradle')
