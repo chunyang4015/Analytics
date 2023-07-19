@@ -17,4 +17,15 @@ data class EventTable(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 
+    /**
+     * 是否是屏幕事件
+     */
+    val isScreen: Boolean
+        get() = type == "screen"
+
+    /**
+     * 是否是点击事件
+     */
+    val isEvent: Boolean
+        get() = type == "event"
 }

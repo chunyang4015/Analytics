@@ -11,7 +11,6 @@ import com.anso.lib.analytics.db.EventTable
 import com.anso.lib.analytics.utils.ALogger
 import rxhttp.toAwait
 import rxhttp.wrapper.param.RxHttp
-import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,12 +63,16 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             } else {
+
                 list.forEach {
                     //此处也可以根据自己业务需求进行定制操作
                     val map = mutableMapOf<String, String>()
                     map["pt"] = it.name
                     map["en"] = it.el
                     map["msg"] = it.msg
+                    if (it.isScreen) {
+                        map["lp"] = "uuid"
+                    }
                     if (debug) {
                         ALogger.logWrite("请求数据:$map")
                     } else {

@@ -1,5 +1,6 @@
 package com.anso.lib.analytics
 
+import android.app.Application
 import android.content.Context
 import androidx.annotation.Keep
 import com.anso.lib.analytics.db.EventDatabase
@@ -44,6 +45,10 @@ object EventManager {
     ) = apply {
         EventDatabase.init(context)
         APushService.startService()
+    }
+
+    private fun registerActivity(app: Application) {
+        app.registerActivityLifecycleCallbacks(ActivityScreenImpl())
     }
 
     /**
