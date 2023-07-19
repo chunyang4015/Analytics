@@ -4,7 +4,6 @@ import com.anso.lib.analytics.bean.EventData
 import com.anso.lib.analytics.db.EventDB
 import com.anso.lib.analytics.push.APushService
 import com.anso.lib.analytics.thread.ScopeJob
-import com.anso.lib.analytics.utils.ALogger
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -48,12 +47,16 @@ object AEvent {
      * @param sendNow 是否即可发送数据 true 即可发送
      */
     @JvmStatic
-    fun screen(name: String, el: String, msg: Map<String, String>?, sendNow: Boolean = false) {
+    fun screen(
+        name: String,
+        el: String,
+        msg: Map<String, String>? = null,
+        sendNow: Boolean = false
+    ) {
         ScopeJob.enqueue {
             //即可推送 或者 满足添加推送
             val send = sendNow || eventNum.incrementAndGet() >= EventManager.pushMaxCount
             val event = EventData(sid, "screen", name, el, msg)
-            ALogger.logWrite("Event.Task $event")
             //存储数据
             EventDB.save(event)
             //触发发送数据
@@ -63,7 +66,7 @@ object AEvent {
         }
     }
 
-    private suspend fun push() {
+    private fun push() {
         APushService.push {
             eventNum.addAndGet(-it)
         }

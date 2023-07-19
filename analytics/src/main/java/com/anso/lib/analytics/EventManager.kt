@@ -13,22 +13,9 @@ object EventManager {
     var config = EventConfig()
 
     /**
-     * 两种接口上传方式，由于安速这面，没有all方式，因此特意制作两种上传方式
-     */
-    /**
      * 通过List上传数据
      */
-    var allService: IAllService? = null
-
-    /**
-     * 遍历List数据上传
-     */
-    var arrayService: IArrayService? = null
-    val allSend: Boolean
-        get() = allService != null
-
-    val fromArray: Boolean
-        get() = arrayService != null
+    var netService: INetService? = null
 
     /**
      * 间隔时间
@@ -62,30 +49,13 @@ object EventManager {
     /**
      * 调用网络接口发送数据
      */
-    suspend fun send(list: Array<EventTable>): Boolean {
-        return try {
-            if (list.isNotEmpty()) {
-                allService?.send(list) ?: false
-            } else {
-                true
-            }
-        } catch (e: Exception) {
-            ALogger.logError("发送数据失败~")
-            false
-        }
-    }
-
-    /**
-     * 调用网络接口发送数据
-     */
-    suspend fun fromArray(list: Array<EventTable>, action: suspend (List<Long>) -> Unit) {
-        val successList = mutableListOf<Long>()
+    suspend fun netService(list: Array<EventTable>, action: suspend (Boolean, List<Long>) -> Unit) {
         try {
+            val successList = mutableListOf<Long>()
+            var success = false
             if (list.isNotEmpty()) {
-                arrayService?.fromArray(list) {
-                    successList.add(it)
-                }
-                action.invoke(successList)
+                netService?.push(list, { success = it }, { successList.add(it) })
+                action.invoke(success, successList)
             }
         } catch (e: Exception) {
             ALogger.logError("发送数据失败~")

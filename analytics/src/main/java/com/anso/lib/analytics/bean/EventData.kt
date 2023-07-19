@@ -6,13 +6,12 @@ import org.json.JSONObject
 
 @Keep
 data class EventData(
-    val sid: String,
+    val sid: String,//APP 生命周期内唯一ID
     val type: String,//类型 [EVENT] [SCREEN]
     val name: String,//事件名称
     val el: String,//事件标签
-    private val msg: Map<String, String>?
+    private val msg: Map<String, String>?//自定义参数
 ) {
-
 
     private val ecp: String
         get() {

@@ -34,10 +34,8 @@ internal object APushService {
         if (task == null) {
             task = object : TimerTask() {
                 override fun run() {
-                    ScopeJob.launch {
-                        ALogger.logWrite("触发定时任务")
-                        push()
-                    }
+                    ALogger.logWrite("触发定时任务")
+                    push()
                 }
             }
         }
@@ -61,19 +59,20 @@ internal object APushService {
      * 及时推送上传数据
      */
     @JvmStatic
-    suspend fun push(action: ((Int) -> Unit)? = null) {
-        time = System.currentTimeMillis()
-        val list = EventDB.getLastByTime(time)
-        if (EventManager.allSend) {
-            if (EventManager.send(list)) {
-                EventDB.delListByTime(time)
-                action?.invoke(list.size)
-            }
-        } else if (EventManager.fromArray) {
-            EventManager.fromArray(list) {
-                EventDB.delById(it)
-                if (list.size == it.size) {
+    fun push(action: ((Int) -> Unit)? = null) {
+        ScopeJob.launch {
+            time = System.currentTimeMillis()
+            val list = EventDB.getLastByTime(time)
+            EventManager.netService(list) { s, it ->
+                if (s) {
+                    EventDB.delListByTime(time)
                     action?.invoke(list.size)
+                }
+                if (list.isNotEmpty()) {
+                    EventDB.delById(it)
+                    if (list.size == it.size) {
+                        action?.invoke(list.size)
+                    }
                 }
             }
         }
